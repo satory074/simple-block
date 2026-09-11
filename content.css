@@ -1,0 +1,56 @@
+.sb-btn {
+  align-self: center;
+  margin-right: 8px;
+  padding: 2px 10px;
+  border: 1px solid rgb(244, 33, 46);
+  border-radius: 9999px;
+  background: transparent;
+  color: rgb(244, 33, 46);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.sb-btn:hover {
+  background: rgba(244, 33, 46, 0.1);
+}
+.sb-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+/* display:none にすると X の仮想リストの位置計算が崩れるので、折りたたむだけにする */
+article.sb-blocked {
+  max-height: 56px;
+  overflow: hidden;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.sb-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgb(15, 20, 25);
+  color: #fff;
+  font: 15px/20px -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.sb-toast button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgb(29, 155, 240);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
