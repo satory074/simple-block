@@ -65,12 +65,13 @@
     return null;
   }
 
-  // X 標準のブロックと同じく、区切り線ごとタイムラインのセルを消す
-  const cellOf = (art) => art.closest('[data-testid="cellInnerDiv"]') ?? art;
+  // セル（cellInnerDiv）自体ではなく中身を消す。X の仮想リストが 0px になったセルを測り直し、
+  // 下のポストが詰まる（Control Panel for Twitter と同じ方式）
+  const hideTargetOf = (art) => art.closest('[data-testid="cellInnerDiv"]')?.firstElementChild ?? art;
 
   function setHidden(key, on) {
     for (const art of document.querySelectorAll(`article[data-sb-user="${key}"]`)) {
-      cellOf(art).classList.toggle('sb-hidden', on);
+      hideTargetOf(art).classList.toggle('sb-hidden', on);
     }
   }
 
@@ -164,7 +165,7 @@
       const key = user.toLowerCase();
       // 仮想リストで DOM が使い回されるため、毎回付け直す
       art.dataset.sbUser = key;
-      cellOf(art).classList.toggle('sb-hidden', blocked.has(key));
+      hideTargetOf(art).classList.toggle('sb-hidden', blocked.has(key));
 
       let btn = art.querySelector('.sb-btn');
       if (key === self) {

@@ -53,8 +53,13 @@ The official X API block endpoint (`POST /2/users/:id/blocking`) is Enterprise-o
 `scan()` runs on a rAF-throttled `MutationObserver`.
 - It re-derives `data-sb-user` on every pass, because X's virtualized list recycles nodes.
 - It checks for an existing `.sb-btn` instead of a "processed" flag, so the button comes back after React re-renders.
-- Blocked authors' posts disappear, like X's native block. Their `cellInnerDiv` ancestor (falling back to the `article`) gets `.sb-hidden`, which is `display:none`. Hiding the whole cell also removes the divider line.
-- If X's virtualized list ever leaves a gap where a hidden cell was, hide the `article` inside the cell instead of the cell itself.
+- Blocked authors' posts disappear, like X's native block.
+  - What gets `.sb-hidden` (`display:none`) is the `cellInnerDiv`'s **first child** (falling back to the `article`). The cell itself is never touched.
+  - Once the page renders, X's virtualized list re-measures the now-0px cell and moves the following posts up. Verified 2026-09-12: the next cell went from `translateY(528px)` to `translateY(0px)`.
+  - Control Panel for Twitter uses the same approach: `$item.firstElementChild.classList.toggle('HiddenTweet', …)`.
+- Testing gotcha: in a background tab (`document.visibilityState === 'hidden'`), X doesn't re-layout at all, because nothing renders, so no ResizeObserver or rAF runs.
+  - A gap therefore *looks* like it remains.
+  - Bring the tab to the front first (e.g. take a screenshot), then measure.
 
 ## Fallback plan (if the API breaks)
 
