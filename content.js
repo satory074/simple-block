@@ -6,7 +6,7 @@
   const BEARER =
     'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
   const HANDLE_RE = /^\/([A-Za-z0-9_]{1,15})$/;
-  const UNDO_MS = 5000;
+  const UNDO_MS = 3000;
   const WARN_AT = 400; // X のブロック上限は約500件/日
 
   const blocked = new Set(); // このページでブロックした handle（小文字）
@@ -65,9 +65,12 @@
     return null;
   }
 
+  // X 標準のブロックと同じく、区切り線ごとタイムラインのセルを消す
+  const cellOf = (art) => art.closest('[data-testid="cellInnerDiv"]') ?? art;
+
   function setHidden(key, on) {
     for (const art of document.querySelectorAll(`article[data-sb-user="${key}"]`)) {
-      art.classList.toggle('sb-blocked', on);
+      cellOf(art).classList.toggle('sb-hidden', on);
     }
   }
 
@@ -161,7 +164,7 @@
       const key = user.toLowerCase();
       // 仮想リストで DOM が使い回されるため、毎回付け直す
       art.dataset.sbUser = key;
-      art.classList.toggle('sb-blocked', blocked.has(key));
+      cellOf(art).classList.toggle('sb-hidden', blocked.has(key));
 
       let btn = art.querySelector('.sb-btn');
       if (key === self) {

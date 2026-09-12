@@ -1,7 +1,7 @@
 # simple-block
 
 Chrome extension (Manifest V3) that adds a one-click "ブロック" button to every post on x.com.
-Blocks immediately with no confirmation, then shows a toast with "元に戻す" (undo) for 5 seconds.
+Blocks immediately with no confirmation, then shows a toast with "元に戻す" (undo) for 3 seconds.
 
 ## Constraints
 
@@ -53,7 +53,8 @@ The official X API block endpoint (`POST /2/users/:id/blocking`) is Enterprise-o
 `scan()` runs on a rAF-throttled `MutationObserver`.
 - It re-derives `data-sb-user` on every pass, because X's virtualized list recycles nodes.
 - It checks for an existing `.sb-btn` instead of a "processed" flag, so the button comes back after React re-renders.
-- Blocked authors' posts get `.sb-blocked` (collapsed via max-height). Don't use `display:none`: it breaks the virtualized list's positioning.
+- Blocked authors' posts disappear, like X's native block. Their `cellInnerDiv` ancestor (falling back to the `article`) gets `.sb-hidden`, which is `display:none`. Hiding the whole cell also removes the divider line.
+- If X's virtualized list ever leaves a gap where a hidden cell was, hide the `article` inside the cell instead of the cell itself.
 
 ## Fallback plan (if the API breaks)
 
@@ -92,9 +93,9 @@ No test suite. Run `node --check content.js` and validate `manifest.json` as JSO
    It does not appear on your own posts or inside quoted posts.
 2. On a repost, the tooltip shows the original author.
 3. Block a test account:
-   - The toast appears, and that author's posts collapse, including ones loaded later.
-   - Undo within 5s restores them.
-   - Waiting 5s keeps the block.
+   - The toast appears, and that author's posts disappear with no gap left behind, including ones loaded later.
+   - Undo within 3s restores them in place.
+   - Waiting 3s keeps the block.
 4. Error paths:
    - Blocking `*blocks/create.json*` in DevTools shows 通信エラー.
    - Setting `sbDay.count = 399` makes the next block show the warning.

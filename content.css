@@ -21,12 +21,8 @@
   cursor: wait;
 }
 
-/* display:none にすると X の仮想リストの位置計算が崩れるので、折りたたむだけにする */
-article.sb-blocked {
-  max-height: 56px;
-  overflow: hidden;
-  opacity: 0.35;
-  pointer-events: none;
+.sb-hidden {
+  display: none !important;
 }
 
 .sb-toast {
