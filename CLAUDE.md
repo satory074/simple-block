@@ -16,9 +16,11 @@ Blocks immediately with no confirmation, then shows a toast with "元に戻す" 
 | `manifest.json` | MV3 manifest. content script on `https://x.com/*` |
 | `content.js` | Injects the button, calls the block API, toast/undo, daily counter |
 | `content.css` | Button, collapsed-post, and toast styles |
+| `icons/icon{16,48,128}.png` | Extension icons: a red "no" sign in `#f4212e`. The 128px icon is 96px of artwork with 16px padding, per CWS guidelines |
 | `README.md` | User-facing install/usage notes (Japanese) |
 | `docs/index.html` | GitHub Pages landing page (not part of the extension). Has the og:image meta and the backlink bar |
 | `docs/og-image.png` | 1200×630 OG image for the landing page |
+| `docs/privacy.html` | Privacy policy (JA + EN). Its URL goes in the Chrome Web Store listing. Keep it in sync if the extension starts handling new data |
 
 The ~250-line budget covers only the extension files above `docs/`. Nothing under `docs/` is loaded by Chrome. Don't add files whose names start with `_`, because Chrome refuses to load an unpacked extension that contains them.
 
@@ -29,6 +31,14 @@ The ~250-line budget covers only the extension files above `docs/`. Nothing unde
 - Pages serves `main:/docs`.
 - The card description is the repo description, and the thumbnail is the landing page's `og:image`.
 - The landing page must keep the fixed backlink bar. The spec is in `basecamp/docs/app-backlink.md`.
+
+## Chrome Web Store
+
+- The store name is "Simple Block for X". Plain "Simple Block" is too close to an existing listing called "x-simple-block". Never use X's logo in the icon or store images.
+- Package only the extension files. `docs/`, `CLAUDE.md`, `README.md`, and `.git` stay out:
+  `zip -X -r simple-block-<ver>.zip manifest.json content.js content.css icons/icon16.png icons/icon48.png icons/icon128.png`
+- Bump `version` in `manifest.json` on every upload. The store rejects a version it has already seen.
+- The privacy practices form declares **Authentication information**, because the extension reads `ct0` and sends it only to x.com. Its privacy policy URL is `https://satory074.github.io/simple-block/privacy.html`.
 
 ## Block mechanism
 

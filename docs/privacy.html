@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>プライバシーポリシー — Simple Block</title>
+  <meta name="description" content="Chrome 拡張 Simple Block のプライバシーポリシー。データ収集はなく、通信は x.com とだけ行います。" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23f4212e' stroke-width='4'/%3E%3Cpath d='M7.5 7.5l17 17' stroke='%23f4212e' stroke-width='4'/%3E%3C/svg%3E" />
+  <style>
+    /* Same palette as index.html */
+    :root {
+      --ink: #0f1419;
+      --muted: #536471;
+      --border: #eff3f4;
+      --surface: #ffffff;
+      --soft: #f7f9f9;
+      --accent: #1565c0;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--surface);
+      color: var(--ink);
+      font: 16px/1.8 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Segoe UI", sans-serif;
+      -webkit-text-size-adjust: 100%;
+    }
+    a { color: var(--accent); }
+    code {
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: var(--soft);
+      font: 0.9em ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    main { max-width: 680px; margin: 0 auto; padding: 56px 20px 24px; }
+    .eyebrow { margin: 0; color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+    h1 { margin: 4px 0 12px; font-size: clamp(30px, 7vw, 40px); line-height: 1.2; letter-spacing: -0.01em; }
+    h2 { margin: 0 0 12px; font-size: 20px; line-height: 1.4; }
+    section { margin: 0 0 40px; }
+    ul { margin: 0; padding-left: 1.4em; }
+    li { margin-bottom: 8px; }
+    .small { color: var(--muted); font-size: 14px; }
+    .en { padding-top: 32px; border-top: 1px solid var(--border); }
+    .foot { padding: 24px 0 8px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; text-align: center; }
+
+    /* サイト間ナビ: 正準仕様は basecamp/docs/app-backlink.md（index.html と同一） */
+    .app-backlink-bar {
+      position: fixed;
+      inset-inline: 0;
+      bottom: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 6px 12px;
+      padding-bottom: calc(6px + env(safe-area-inset-bottom));
+      background: color-mix(in srgb, var(--surface) 90%, transparent);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .app-backlink-bar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3em;
+      padding: 8px 14px;
+      margin: -8px 0;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.12s ease;
+    }
+    .app-backlink-bar a:hover {
+      color: var(--accent);
+    }
+    body {
+      padding-bottom: calc(48px + env(safe-area-inset-bottom));
+    }
+    html {
+      scroll-padding-bottom: calc(48px + env(safe-area-inset-bottom));
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow"><a href="./">Simple Block</a></p>
+    <h1>プライバシーポリシー</h1>
+    <p class="small">最終更新日: 2026年9月12日</p>
+
+    <section>
+      <h2>収集する情報</h2>
+      <p>ありません。Simple Block は開発者のサーバーを持たず、利用者の情報を開発者や第三者に送ることはありません。アクセス解析や広告も入っていません。</p>
+    </section>
+
+    <section>
+      <h2>拡張機能の中で扱う情報</h2>
+      <ul>
+        <li><strong>x.com の <code>ct0</code> Cookie（CSRF トークン）</strong>: ブロック・ブロック解除のリクエストを x.com に送るときにだけ使います。送り先は x.com だけで、保存はしません。</li>
+        <li><strong>投稿者の @ユーザー名</strong>: ブロックボタンを押した投稿の投稿者を、ブロック対象として x.com に送ります。</li>
+        <li><strong>当日のブロック件数</strong>: 1日の上限（約500件）に近づいたら警告するために、日付と件数だけを <code>chrome.storage.local</code>（お使いの端末内）に保存します。</li>
+      </ul>
+      <p>通信先は x.com だけです。拡張機能を削除すると、保存した件数も消えます。</p>
+    </section>
+
+    <section>
+      <h2>お問い合わせ</h2>
+      <p><a href="https://github.com/satory074/simple-block/issues">GitHub の Issues</a> からご連絡ください。</p>
+    </section>
+
+    <section class="en" lang="en">
+      <h2>Privacy Policy (English)</h2>
+      <p>Simple Block does not collect any data. It has no server of its own and sends nothing to the developer or any third party. It contains no analytics or ads.</p>
+      <ul>
+        <li>The <code>ct0</code> cookie (x.com's CSRF token) is read only to send block and unblock requests to x.com. It is sent to x.com only and is never stored.</li>
+        <li>The @handle of a post's author is sent to x.com as the block target when you click the button.</li>
+        <li>Today's date and block count are kept in <code>chrome.storage.local</code> on your device to warn you near X's daily limit. Removing the extension deletes them.</li>
+      </ul>
+      <p>The extension talks to x.com only. Contact: <a href="https://github.com/satory074/simple-block/issues">GitHub Issues</a>.</p>
+    </section>
+
+    <footer class="foot">
+      <a href="./">Simple Block</a> · <a href="https://github.com/satory074/simple-block">ソースコード（GitHub）</a>
+    </footer>
+  </main>
+
+  <!-- サイト間ナビ: 正準仕様は basecamp/docs/app-backlink.md -->
+  <nav class="app-backlink-bar" aria-label="サイト間ナビゲーション">
+    <a href="https://satory074.com/apps/" target="_blank" rel="noopener"
+       aria-label="satory074 のほかのアプリ一覧を新しいタブで開く"
+       >satory074 のほかのアプリ <span aria-hidden="true">↗</span></a>
+  </nav>
+</body>
+</html>
