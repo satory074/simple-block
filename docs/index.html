@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple Block — X のワンクリックブロック Chrome 拡張</title>
+  <meta name="description" content="X (x.com) の各投稿に「ブロック」ボタンを追加する Chrome 拡張。確認なしで即ブロック、3秒間は元に戻せます。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:url" content="https://satory074.github.io/simple-block/" />
+  <meta property="og:site_name" content="Simple Block" />
+  <meta property="og:title" content="Simple Block — X のワンクリックブロック Chrome 拡張" />
+  <meta property="og:description" content="X の投稿に「ブロック」ボタンを追加。「… → ブロック → 確認」を1クリックに。3秒間は元に戻せます。" />
+  <meta property="og:image" content="https://satory074.github.io/simple-block/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content="Simple Block — X の投稿に、ワンクリックの「ブロック」ボタン" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Simple Block — X のワンクリックブロック Chrome 拡張" />
+  <meta name="twitter:description" content="X の投稿に「ブロック」ボタンを追加。「… → ブロック → 確認」を1クリックに。3秒間は元に戻せます。" />
+  <meta name="twitter:image" content="https://satory074.github.io/simple-block/og-image.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23f4212e' stroke-width='4'/%3E%3Cpath d='M7.5 7.5l17 17' stroke='%23f4212e' stroke-width='4'/%3E%3C/svg%3E" />
+  <style>
+    /* Colors follow the extension itself (content.css) and X's palette. */
+    :root {
+      --ink: #0f1419;
+      --muted: #536471; /* 6.12:1 on white */
+      --border: #eff3f4;
+      --surface: #ffffff;
+      --soft: #f7f9f9;
+      --red: #f4212e;
+      --accent: #1565c0; /* 5.75:1 on white */
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--surface);
+      color: var(--ink);
+      font: 16px/1.8 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Segoe UI", sans-serif;
+      -webkit-text-size-adjust: 100%;
+    }
+    a { color: var(--accent); }
+    code {
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: var(--soft);
+      font: 0.9em ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    main { max-width: 680px; margin: 0 auto; padding: 56px 20px 24px; }
+
+    .eyebrow { margin: 0; color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+    h1 { margin: 4px 0 12px; font-size: clamp(38px, 9vw, 54px); line-height: 1.1; letter-spacing: -0.02em; }
+    .lead { margin: 0 0 24px; font-size: 18px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 40px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 22px;
+      border-radius: 9999px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .btn-primary:hover { background: #272c30; }
+    .btn-secondary { border: 1px solid #cfd9de; color: var(--ink); }
+    .btn-secondary:hover { background: var(--soft); }
+
+    /* Mock of a post header with the extension's button, plus its toast */
+    .demo { margin: 0 0 56px; padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--soft); }
+    .post { display: flex; gap: 12px; padding: 12px 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+    .avatar { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #cfd9de; }
+    .post-body { flex: 1; min-width: 0; }
+    .post-head { display: flex; align-items: center; gap: 4px; font-size: 15px; line-height: 20px; }
+    .post-name { flex: none; font-weight: 700; }
+    .post-meta { overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
+    .post-actions { display: flex; flex: none; align-items: center; margin-left: auto; }
+    .sb-btn {
+      margin-right: 8px;
+      padding: 2px 10px;
+      border: 1px solid var(--red);
+      border-radius: 9999px;
+      color: var(--red);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 18px;
+      white-space: nowrap;
+    }
+    .caret { display: block; width: 19px; height: 19px; color: var(--muted); }
+    .post-lines span { display: block; height: 10px; margin-top: 10px; border-radius: 5px; background: var(--border); }
+    .post-lines span:last-child { width: 60%; }
+    .toast {
+      display: flex;
+      gap: 16px;
+      width: fit-content;
+      max-width: 100%;
+      margin: 16px auto 0;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 15px;
+      line-height: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .toast-undo { color: #1d9bf0; font-weight: 700; white-space: nowrap; }
+    .demo figcaption { margin-top: 16px; color: var(--muted); font-size: 14px; text-align: center; }
+
+    h2 { margin: 0 0 16px; font-size: 22px; line-height: 1.4; }
+    section { margin: 0 0 48px; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .features li { padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; }
+    .features strong { display: block; margin-bottom: 4px; font-size: 16px; }
+    .features span { color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .steps, .notes { margin: 0; padding-left: 1.4em; }
+    .steps li, .notes li { margin-bottom: 8px; }
+    .small { color: var(--muted); font-size: 14px; }
+    .foot { padding: 24px 0 8px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; text-align: center; }
+
+    /* サイト間ナビ: 画面下端に常駐する控えめな逆リンクバー（→ satory074.com/apps）。
+       正準仕様: basecamp/docs/app-backlink.md。本文を隠さない（body 側に高さ分の padding を予約） */
+    .app-backlink-bar {
+      position: fixed;
+      inset-inline: 0;
+      bottom: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 6px 12px;
+      padding-bottom: calc(6px + env(safe-area-inset-bottom));
+      background: color-mix(in srgb, var(--surface) 90%, transparent);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .app-backlink-bar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3em;
+      /* ヒット領域を WCAG 2.5.8 の 24px 以上に拡大（負マージンで見た目の高さは不変） */
+      padding: 8px 14px;
+      margin: -8px 0;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.12s ease;
+    }
+    .app-backlink-bar a:hover {
+      color: var(--accent);
+    }
+    body {
+      padding-bottom: calc(48px + env(safe-area-inset-bottom));
+    }
+    /* ページ内アンカー遷移時に固定バーが飛び先を隠さないように */
+    html {
+      scroll-padding-bottom: calc(48px + env(safe-area-inset-bottom));
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Chrome 拡張 · X (x.com)</p>
+    <h1>Simple Block</h1>
+    <p class="lead">X の投稿に「ブロック」ボタンを追加します。<br />「… → ブロック → 確認」の3手順が、1クリックになります。</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/satory074/simple-block/archive/refs/heads/main.zip">ZIP をダウンロード</a>
+      <a class="btn btn-secondary" href="https://github.com/satory074/simple-block">GitHub で見る</a>
+    </div>
+
+    <figure class="demo" aria-label="X の投稿に追加されたブロックボタンと、ブロック後に出るトーストのイメージ">
+      <div class="post" aria-hidden="true">
+        <div class="avatar"></div>
+        <div class="post-body">
+          <div class="post-head">
+            <span class="post-name">表示名</span>
+            <span class="post-meta">@handle · 3分</span>
+            <span class="post-actions">
+              <span class="sb-btn">ブロック</span>
+              <svg class="caret" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /></svg>
+            </span>
+          </div>
+          <div class="post-lines"><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="toast" aria-hidden="true"><span>@handle をブロックしました</span><span class="toast-undo">元に戻す</span></div>
+      <figcaption>「…」の左にボタンが付きます。押すとすぐにブロックし、画面下に「元に戻す」が3秒間出ます。</figcaption>
+    </figure>
+
+    <section aria-labelledby="features">
+      <h2 id="features">特徴</h2>
+      <ul class="features">
+        <li><strong>1クリックで即ブロック</strong><span>確認ダイアログなし。ボタンにマウスを乗せると、対象の @ユーザー名 が出ます（リポストなら元の投稿者）。</span></li>
+        <li><strong>3秒間は元に戻せる</strong><span>押し間違えても、トーストの「元に戻す」でブロックを解除し、投稿も元の位置に戻ります。</span></li>
+        <li><strong>ブロックした人の投稿は消える</strong><span>X 標準のブロックと同じく、タイムラインから隙間なく消えます。あとから読み込まれた投稿も同様です。</span></li>
+        <li><strong>小さく、余計な通信なし</strong><span>ビルド不要・依存ゼロの数百行。x.com 以外への通信やデータ収集は一切ありません。</span></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="install">
+      <h2 id="install">インストール</h2>
+      <p>Chrome ウェブストアには公開していないため、手動で読み込みます。</p>
+      <ol class="steps">
+        <li><a href="https://github.com/satory074/simple-block/archive/refs/heads/main.zip">ZIP をダウンロード</a>して展開する</li>
+        <li>Chrome で <code>chrome://extensions</code> を開く</li>
+        <li>右上の「デベロッパーモード」を ON にする</li>
+        <li>「パッケージ化されていない拡張機能を読み込む」を押し、展開した <code>simple-block-main</code> フォルダを選ぶ</li>
+        <li>x.com のタブを再読み込みする</li>
+      </ol>
+      <p class="small">更新するときは、新しい ZIP の中身で同じフォルダを置き換えてから、<code>chrome://extensions</code> でこの拡張の再読み込み（↻）を押してください。</p>
+    </section>
+
+    <section aria-labelledby="notes">
+      <h2 id="notes">注意</h2>
+      <ul class="notes">
+        <li><strong>ブロックすると相互のフォローが外れます。</strong>「元に戻す」でブロックを解除しても、フォローは戻りません。</li>
+        <li>X ではブロックが<strong>1日あたり約500件</strong>に制限されていて、超えると強制ログアウトされることがあります。1日400件を超えるとトーストで警告します。</li>
+        <li>Web 版 X と同じ内部 API を使っているため、X の仕様変更で動かなくなる可能性があります。ブロックは必ず自分のクリックで1件ずつ行う設計です。</li>
+        <li>料金はかかりません。</li>
+      </ul>
+    </section>
+
+    <footer class="foot">
+      <a href="https://github.com/satory074/simple-block">ソースコード（GitHub）</a> · Chrome（Manifest V3）
+    </footer>
+  </main>
+
+  <!-- サイト間ナビ: 画面下端に常駐する控えめな逆リンクバー（→ satory074.com/apps）。
+       正準仕様: basecamp/docs/app-backlink.md -->
+  <nav class="app-backlink-bar" aria-label="サイト間ナビゲーション">
+    <a href="https://satory074.com/apps/" target="_blank" rel="noopener"
+       aria-label="satory074 のほかのアプリ一覧を新しいタブで開く"
+       >satory074 のほかのアプリ <span aria-hidden="true">↗</span></a>
+  </nav>
+</body>
+</html>

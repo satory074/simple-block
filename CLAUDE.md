@@ -17,6 +17,18 @@ Blocks immediately with no confirmation, then shows a toast with "元に戻す" 
 | `content.js` | Injects the button, calls the block API, toast/undo, daily counter |
 | `content.css` | Button, collapsed-post, and toast styles |
 | `README.md` | User-facing install/usage notes (Japanese) |
+| `docs/index.html` | GitHub Pages landing page (not part of the extension). Has the og:image meta and the backlink bar |
+| `docs/og-image.png` | 1200×630 OG image for the landing page |
+
+The ~250-line budget covers only the extension files above `docs/`. Nothing under `docs/` is loaded by Chrome. Don't add files whose names start with `_`, because Chrome refuses to load an unpacked extension that contains them.
+
+## Listing on satory074.com/apps
+
+- The public repo has the topic `featured-app`, and its `homepage` is `https://satory074.github.io/simple-block/`.
+- basecamp's daily `update-apps-feed` job picks it up.
+- Pages serves `main:/docs`.
+- The card description is the repo description, and the thumbnail is the landing page's `og:image`.
+- The landing page must keep the fixed backlink bar. The spec is in `basecamp/docs/app-backlink.md`.
 
 ## Block mechanism
 

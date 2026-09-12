@@ -3,12 +3,15 @@
 X (x.com) の各投稿に「ブロック」ボタンを追加する Chrome 拡張です。
 標準の「… → ブロック → 確認」を **1クリック** にします。
 
+紹介ページ: https://satory074.github.io/simple-block/
+
 ## インストール
 
-1. Chrome で `chrome://extensions` を開く
-2. 右上の「デベロッパーモード」を ON にする
-3. 「パッケージ化されていない拡張機能を読み込む」を押し、この `simple-block` フォルダを選ぶ
-4. x.com のタブを再読み込みする
+1. [ZIP をダウンロード](https://github.com/satory074/simple-block/archive/refs/heads/main.zip)して展開する（`git clone` でも可）
+2. Chrome で `chrome://extensions` を開く
+3. 右上の「デベロッパーモード」を ON にする
+4. 「パッケージ化されていない拡張機能を読み込む」を押し、展開した `simple-block-main`（clone なら `simple-block`）フォルダを選ぶ
+5. x.com のタブを再読み込みする
 
 ## 使い方
 
