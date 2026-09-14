@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Simple Block — X のワンクリックブロック Chrome 拡張</title>
-  <meta name="description" content="X (x.com) の各投稿に「ブロック」ボタンを追加する Chrome 拡張。確認なしで即ブロック、3秒間は元に戻せます。" />
+  <meta name="description" content="X (x.com) の各投稿に「ブロック」ボタンを追加する Chrome 拡張。確認なしで即ブロック、5秒間は元に戻せます。" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ja_JP" />
   <meta property="og:url" content="https://satory074.github.io/simple-block/" />
   <meta property="og:site_name" content="Simple Block" />
   <meta property="og:title" content="Simple Block — X のワンクリックブロック Chrome 拡張" />
-  <meta property="og:description" content="X の投稿に「ブロック」ボタンを追加。「… → ブロック → 確認」を1クリックに。3秒間は元に戻せます。" />
+  <meta property="og:description" content="X の投稿に「ブロック」ボタンを追加。「… → ブロック → 確認」を1クリックに。5秒間は元に戻せます。" />
   <meta property="og:image" content="https://satory074.github.io/simple-block/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -18,7 +18,7 @@
   <meta property="og:image:alt" content="Simple Block — X の投稿に、ワンクリックの「ブロック」ボタン" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Simple Block — X のワンクリックブロック Chrome 拡張" />
-  <meta name="twitter:description" content="X の投稿に「ブロック」ボタンを追加。「… → ブロック → 確認」を1クリックに。3秒間は元に戻せます。" />
+  <meta name="twitter:description" content="X の投稿に「ブロック」ボタンを追加。「… → ブロック → 確認」を1クリックに。5秒間は元に戻せます。" />
   <meta name="twitter:image" content="https://satory074.github.io/simple-block/og-image.png" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23f4212e' stroke-width='4'/%3E%3Cpath d='M7.5 7.5l17 17' stroke='%23f4212e' stroke-width='4'/%3E%3C/svg%3E" />
   <style>
@@ -118,6 +118,9 @@
     .steps, .notes { margin: 0; padding-left: 1.4em; }
     .steps li, .notes li { margin-bottom: 8px; }
     .small { color: var(--muted); font-size: 14px; }
+    details { margin-top: 20px; }
+    summary { color: var(--muted); font-size: 15px; cursor: pointer; }
+    details[open] summary { margin-bottom: 12px; }
     .foot { padding: 24px 0 8px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; text-align: center; }
 
     /* サイト間ナビ: 画面下端に常駐する控えめな逆リンクバー（→ satory074.com/apps）。
@@ -164,11 +167,11 @@
 </head>
 <body>
   <main>
-    <p class="eyebrow">Chrome 拡張 · X (x.com)</p>
+    <p class="eyebrow">Chrome 拡張 · X (x.com) · 非公式</p>
     <h1>Simple Block</h1>
     <p class="lead">X の投稿に「ブロック」ボタンを追加します。<br />「… → ブロック → 確認」の3手順が、1クリックになります。</p>
     <div class="cta">
-      <a class="btn btn-primary" href="https://github.com/satory074/simple-block/archive/refs/heads/main.zip">ZIP をダウンロード</a>
+      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/gncjbcfkebfbdbhgfcdpmakngcdfejea">Chrome ウェブストアで入手</a>
       <a class="btn btn-secondary" href="https://github.com/satory074/simple-block">GitHub で見る</a>
     </div>
 
@@ -188,44 +191,53 @@
         </div>
       </div>
       <div class="toast" aria-hidden="true"><span>@handle をブロックしました</span><span class="toast-undo">元に戻す</span></div>
-      <figcaption>「…」の左にボタンが付きます。押すとすぐにブロックし、画面下に「元に戻す」が3秒間出ます。</figcaption>
+      <figcaption>「…」の左にボタンが付きます。押すとすぐにブロックし、画面下に「元に戻す」が5秒間出ます。</figcaption>
     </figure>
 
     <section aria-labelledby="features">
       <h2 id="features">特徴</h2>
       <ul class="features">
         <li><strong>1クリックで即ブロック</strong><span>確認ダイアログなし。ボタンにマウスを乗せると、対象の @ユーザー名 が出ます（リポストなら元の投稿者）。</span></li>
-        <li><strong>3秒間は元に戻せる</strong><span>押し間違えても、トーストの「元に戻す」でブロックを解除し、投稿も元の位置に戻ります。</span></li>
+        <li><strong>5秒間は元に戻せる</strong><span>押し間違えても、トーストの「元に戻す」でブロックを解除し、投稿も元の位置に戻ります。トーストにマウスを乗せている間は消えません。</span></li>
         <li><strong>ブロックした人の投稿は消える</strong><span>X 標準のブロックと同じく、タイムラインから隙間なく消えます。あとから読み込まれた投稿も同様です。</span></li>
-        <li><strong>小さく、余計な通信なし</strong><span>ビルド不要・依存ゼロの数百行。x.com 以外への通信やデータ収集は一切ありません。</span></li>
+        <li><strong>小さく、余計な通信なし</strong><span>ビルド不要・依存ゼロの数百行。x.com 以外への通信やデータ収集はありません。</span></li>
       </ul>
     </section>
 
     <section aria-labelledby="install">
       <h2 id="install">インストール</h2>
-      <p>Chrome ウェブストアには公開していないため、手動で読み込みます。</p>
-      <ol class="steps">
-        <li><a href="https://github.com/satory074/simple-block/archive/refs/heads/main.zip">ZIP をダウンロード</a>して展開する</li>
-        <li>Chrome で <code>chrome://extensions</code> を開く</li>
-        <li>右上の「デベロッパーモード」を ON にする</li>
-        <li>「パッケージ化されていない拡張機能を読み込む」を押し、展開した <code>simple-block-main</code> フォルダを選ぶ</li>
-        <li>x.com のタブを再読み込みする</li>
-      </ol>
-      <p class="small">更新するときは、新しい ZIP の中身で同じフォルダを置き換えてから、<code>chrome://extensions</code> でこの拡張の再読み込み（↻）を押してください。</p>
+      <p><a href="https://chromewebstore.google.com/detail/gncjbcfkebfbdbhgfcdpmakngcdfejea">Chrome ウェブストア</a>で「Chrome に追加」を押してください。</p>
+      <p class="small">公式版のストア ID は <code>gncjbcfkebfbdbhgfcdpmakngcdfejea</code> だけです。同じ名前でも ID が違うものは作者と無関係です。</p>
+      <details>
+        <summary>手動で読み込む（中身を確認したい方・開発者向け）</summary>
+        <ol class="steps">
+          <li><a href="https://github.com/satory074/simple-block/archive/refs/heads/main.zip">ZIP をダウンロード</a>して展開する</li>
+          <li>Chrome で <code>chrome://extensions</code> を開く</li>
+          <li>右上の「デベロッパーモード」を ON にする</li>
+          <li>「パッケージ化されていない拡張機能を読み込む」を押し、展開した <code>simple-block-main</code> フォルダを選ぶ</li>
+          <li>x.com のタブを再読み込みする</li>
+        </ol>
+        <p class="small">手動で読み込んだ場合は自動更新されません。更新するときは、新しい ZIP の中身で同じフォルダを置き換えてから、<code>chrome://extensions</code> でこの拡張の再読み込み（↻）を押してください。</p>
+      </details>
     </section>
 
     <section aria-labelledby="notes">
-      <h2 id="notes">注意</h2>
+      <h2 id="notes">ご注意</h2>
       <ul class="notes">
+        <li>Simple Block は X Corp. とは無関係の非公式ツールです。</li>
+        <li>ログイン中のあなたのアカウントで、Web 版 X が使う非公開の内部 API を呼び出します。X の判断でアカウントが制限・凍結される可能性はゼロではありません（2025年11月には、別の非公式拡張の利用者が一時的に一斉凍結されました）。</li>
         <li><strong>ブロックすると相互のフォローが外れます。</strong>「元に戻す」でブロックを解除しても、フォローは戻りません。</li>
-        <li>X ではブロックが<strong>1日あたり約500件</strong>に制限されていて、超えると強制ログアウトされることがあります。1日400件を超えるとトーストで警告します。</li>
-        <li>Web 版 X と同じ内部 API を使っているため、X の仕様変更で動かなくなる可能性があります。ブロックは必ず自分のクリックで1件ずつ行う設計です。</li>
-        <li>料金はかかりません。</li>
+        <li>短時間に続けてブロックすると、X に制限されることがあります。1日400件を超えると警告し、X から制限の応答があった場合や、短時間に続けてブロックした場合は、しばらくブロックを止めます。</li>
+        <li>X の仕様変更で、予告なく動かなくなることがあります。</li>
+        <li>無償・現状のまま提供し、動作や X の仕様変更への対応は保証しません（<a href="https://github.com/satory074/simple-block/blob/main/LICENSE">MIT ライセンス</a>）。</li>
+        <li>不具合や凍結の報告は <a href="https://github.com/satory074/simple-block/issues">GitHub Issues</a> へお寄せください。重大な問題を確認したら、このページとストアの説明文の冒頭でお知らせし、必要に応じて配布を止めます。</li>
+        <li>この拡張機能を売却・譲渡することはありません。</li>
       </ul>
     </section>
 
     <footer class="foot">
-      <a href="https://github.com/satory074/simple-block">ソースコード（GitHub）</a> · <a href="privacy.html">プライバシーポリシー</a> · Chrome（Manifest V3）
+      <a href="https://github.com/satory074/simple-block">ソースコード（GitHub）</a> · <a href="privacy.html">プライバシーポリシー</a> · MIT ライセンス · Chrome（Manifest V3）<br />
+      X Corp. とは無関係の非公式ツールです。
     </footer>
   </main>
 
