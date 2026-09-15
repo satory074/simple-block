@@ -7,7 +7,7 @@
     'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
   const HANDLE_RE = /^\/([A-Za-z0-9_]{1,15})$/;
   const AVATAR = 'UserAvatar-Container-';
-  const UNDO_MS = 5000;
+  const UNDO_MS = 3000;
   const WARN_AT = 400; // X のブロック上限は約500件/日
   // 短時間の連続ブロックは X に自動化と判定されやすい。WINDOW_MS あたり BURST 件までにし、429 のあとは WINDOW_MS 止める
   const WINDOW_MS = 60000;

@@ -1,7 +1,7 @@
 # simple-block
 
 Chrome extension (Manifest V3) that adds a one-click "ブロック" button to every post on x.com.
-Blocks immediately with no confirmation, then shows a toast with "元に戻す" (undo) for 5 seconds. The timer pauses while the pointer or focus is on the toast.
+Blocks immediately with no confirmation, then shows a toast with "元に戻す" (undo) for 3 seconds. The timer pauses while the pointer or focus is on the toast. 3 seconds is the user's choice (2026-09-12, reaffirmed 2026-09-16); don't lengthen it without asking.
 
 ## Constraints
 
@@ -168,9 +168,9 @@ No test suite. Run `node --check content.js` and validate `manifest.json` as JSO
 2. On a repost, the tooltip shows the original author.
 3. Block a test account:
    - The toast appears, and that author's posts disappear with no gap left behind, including ones loaded later.
-   - Undo within 5s restores them in place, and the toast says follows are not restored.
+   - Undo within 3s restores them in place, and the toast says follows are not restored.
    - Hovering the toast keeps it.
-   - Waiting 5s keeps the block.
+   - Waiting 3s keeps the block.
 4. Error paths:
    - Blocking `*blocks/create.json*` in DevTools shows 通信エラー.
    - Setting `sbDay.count = 399` makes the next block show the warning.
