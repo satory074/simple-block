@@ -31,6 +31,7 @@ The ~250-line budget covers only the extension files above `docs/`. Nothing unde
 - basecamp's daily `update-apps-feed` job picks it up.
 - Pages serves `main:/docs`.
 - The card description is the repo description, and the thumbnail is the landing page's `og:image`.
+- The card links straight to the Chrome Web Store listing, not the landing page. basecamp's `URL_OVERRIDES` in `scripts/update-apps-feed.ts` does this, and `homepage` stays the landing page so the thumbnail keeps working. Update that entry if the item ID ever changes.
 - The landing page must keep the fixed backlink bar. The spec is in `basecamp/docs/app-backlink.md`.
 
 ## Chrome Web Store
