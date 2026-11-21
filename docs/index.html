@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Simple Block — X のワンクリックブロック Chrome 拡張</title>
   <meta name="description" content="X (x.com) の各投稿に「ブロック」ボタンを追加する Chrome 拡張。確認なしで即ブロック、3秒間は元に戻せます。" />
+  <!-- canonical = og:url = このページの絶対 URL。scripts/seo-check.mjs が一致を検査する -->
+  <link rel="canonical" href="https://satory074.github.io/simple-block/" />
+  <link rel="sitemap" type="application/xml" href="https://satory074.github.io/simple-block/sitemap.xml" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ja_JP" />
   <meta property="og:url" content="https://satory074.github.io/simple-block/" />
@@ -20,6 +23,37 @@
   <meta name="twitter:title" content="Simple Block — X のワンクリックブロック Chrome 拡張" />
   <meta name="twitter:description" content="X の投稿に「ブロック」ボタンを追加。「… → ブロック → 確認」を1クリックに。3秒間は元に戻せます。" />
   <meta name="twitter:image" content="https://satory074.github.io/simple-block/og-image.png" />
+  <!-- 構造化データ: 画面に出ている内容だけを書く（評価・レビューは入れない）。作者の @id は satory074.com 側で定義 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://satory074.github.io/simple-block/#website",
+        "name": "Simple Block",
+        "url": "https://satory074.github.io/simple-block/",
+        "description": "X (x.com) の各投稿に「ブロック」ボタンを追加する Chrome 拡張。確認なしで即ブロック、3秒間は元に戻せます。",
+        "inLanguage": "ja",
+        "about": { "@id": "https://satory074.github.io/simple-block/#app" },
+        "author": { "@type": "Person", "@id": "https://satory074.com/#person", "name": "satory074", "url": "https://satory074.com/" }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://satory074.github.io/simple-block/#app",
+        "name": "Simple Block",
+        "description": "X の投稿に「ブロック」ボタンを追加します。「… → ブロック → 確認」の3手順が、1クリックになります。",
+        "url": "https://chromewebstore.google.com/detail/gncjbcfkebfbdbhgfcdpmakngcdfejea",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Chrome",
+        "inLanguage": "ja",
+        "license": "https://github.com/satory074/simple-block/blob/main/LICENSE",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+        "author": { "@type": "Person", "@id": "https://satory074.com/#person", "name": "satory074", "url": "https://satory074.com/" }
+      }
+    ]
+  }
+  </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23f4212e' stroke-width='4'/%3E%3Cpath d='M7.5 7.5l17 17' stroke='%23f4212e' stroke-width='4'/%3E%3C/svg%3E" />
   <style>
     /* Colors follow the extension itself (content.css) and X's palette. */

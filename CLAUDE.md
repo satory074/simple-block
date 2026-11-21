@@ -22,8 +22,11 @@ Blocks immediately with no confirmation, then shows a toast with "元に戻す" 
 | `docs/index.html` | GitHub Pages landing page (not part of the extension). Has the og:image meta and the backlink bar |
 | `docs/og-image.png` | 1200×630 OG image for the landing page |
 | `docs/privacy.html` | Privacy policy (JA + EN), including the CWS Limited Use statement. Its URL goes in the Chrome Web Store listing. Keep it in sync if the extension starts handling new data |
+| `docs/sitemap.xml` | Hand-written sitemap listing both pages above. Add any new `docs/*.html` here |
+| `scripts/seo-check.mjs` | Copy of `basecamp/scripts/seo-check.mjs`. **Don't edit it here**; re-copy from basecamp. Not part of the extension |
+| `.github/workflows/seo-check.yml` | Runs seo-check on `docs/` for PRs and pushes to main. It does not deploy |
 
-The ~250-line budget covers only the extension files above `docs/`. Nothing under `docs/` is loaded by Chrome. Don't add files whose names start with `_`, because Chrome refuses to load an unpacked extension that contains them.
+The ~250-line budget covers only the extension files above `docs/` (not `scripts/` or `.github/`). Nothing under `docs/` is loaded by Chrome. Don't add files whose names start with `_`, because Chrome refuses to load an unpacked extension that contains them.
 
 ## Listing on satory074.com/apps
 
@@ -33,6 +36,16 @@ The ~250-line budget covers only the extension files above `docs/`. Nothing unde
 - The card description is the repo description, and the thumbnail is the landing page's `og:image`.
 - The card links straight to the Chrome Web Store listing, not the landing page. basecamp's `URL_OVERRIDES` in `scripts/update-apps-feed.ts` does this, and `homepage` stays the landing page so the thumbnail keeps working. Update that entry if the item ID ever changes.
 - The landing page must keep the fixed backlink bar. The spec is in `basecamp/docs/app-backlink.md`.
+
+## Search engines (SEO)
+
+- Both pages have `<link rel="canonical">` equal to `og:url`: `https://satory074.github.io/simple-block/` and `https://satory074.github.io/simple-block/privacy.html` (the privacy URL is the one registered in the store, so keep the `.html` form). Both use `og-image.png`.
+- One JSON-LD block per page, describing only what the page shows:
+  - `index.html`: `@graph` of `WebSite` (`#website`) and `SoftwareApplication` (`#app`; `url` = the store listing, `applicationCategory` `BrowserApplication`, `operatingSystem` `Chrome`, `offers` price 0 JPY because the page says it is free, MIT `license`).
+  - `privacy.html`: `WebPage` (`dateModified` = the 最終更新日 on the page; update both together), `isPartOf` → `#website`.
+  - `author` is always `{"@type":"Person","@id":"https://satory074.com/#person",...}` (defined on satory074.com).
+  - **Never add `aggregateRating` or `review`.** Google shows SoftwareApplication rich results only with ratings, and made-up ratings are spam. Without them, no rich result is expected.
+- Check: `node scripts/seo-check.mjs docs https://satory074.github.io/simple-block/ --require-backlink`. Pages is legacy (`main:/docs`), so GitHub deploys on its own and this check cannot block it. Treat a red check on a PR as "don't merge".
 
 ## Chrome Web Store
 
@@ -154,7 +167,7 @@ Undo is awkward under this approach (it needs the profile page's "ブロック�
 2. `chrome://extensions` → reload the extension (↻).
 3. Reload the x.com tab.
 
-No test suite. Run `node --check content.js` and validate `manifest.json` as JSON.
+No test suite for the extension. Run `node --check content.js` and validate `manifest.json` as JSON. For `docs/`, run the seo-check command above.
 
 ## Manual verification checklist
 

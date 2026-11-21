@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 手書きのサイトマップ。docs/ に HTML を足したらここにも足す（scripts/seo-check.mjs が一致を検査する） -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://satory074.github.io/simple-block/</loc></url>
+  <url><loc>https://satory074.github.io/simple-block/privacy.html</loc></url>
+</urlset>
