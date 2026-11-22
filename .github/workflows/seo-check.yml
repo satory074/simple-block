@@ -1,0 +1,32 @@
+# 紹介ページ (docs/) の検索エンジン向け検査。canonical・サイトマップ・JSON-LD・戻りリンクのバーを見る。
+# このリポジトリの GitHub Pages は「main ブランチの /docs をそのまま配信」(legacy) で、deploy は
+# GitHub 側が別に走らせる。だからこの workflow は deploy を止められない。PR で落ちたらマージしない、が止める手段。
+# deploy はしない (pages: write も持たない)。
+name: SEO check
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "scripts/seo-check.mjs"
+      - ".github/workflows/seo-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "scripts/seo-check.mjs"
+      - ".github/workflows/seo-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - run: node scripts/seo-check.mjs docs https://satory074.github.io/simple-block/ --require-backlink
